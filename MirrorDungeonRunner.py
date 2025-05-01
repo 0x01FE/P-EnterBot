@@ -182,6 +182,8 @@ class MirrorDungeonRunner:
 
         if self.resizing_needed:
 
+            logging.info(f"Alternative screen size of ({self.width}, {self.height}) detected.")
+
             aspect_ratio: float = self.width / self.height
             if aspect_ratio != 16 / 9:
                 logging.warning(f'Aspect ratio is not 16:9, the program might not work very well. {aspect_ratio=}')
@@ -189,6 +191,8 @@ class MirrorDungeonRunner:
             self.scale_images()
 
     def scale_images(self) -> None:
+        logging.info("Scaling assets for screen size.")
+
         # Make scaled images dir and wipe it
         os.makedirs('Scaled_Images/', exist_ok=True)
 
@@ -629,13 +633,13 @@ class MirrorDungeonRunner:
             case 14: # Pre-fight Sinner Selection
                 if self.on_screen("Team_ClearSelection"):
                     self.human_click(1715, 720)
-                    time.sleep(random.uniform(0.5, 1.0))
+                    time.sleep(random.gauss(2.5, 1.0))
                     self.human_click(1145, 740)
-                    time.sleep(random.uniform(0.5, 1.0))
+                    time.sleep(random.uniform(1.0, 2.0))
 
                 for i in range(12):
                     self.human_click(SINNER_COORDINATES[self.curTeam[i+2].lower()])
-                    time.sleep(random.uniform(0.3, 3.5))
+                    time.sleep(random.gauss(2.5, 1.5))
 
                 time.sleep(random.uniform(0.25, 0.75))
                 self.human_click(1720,880)
@@ -643,9 +647,9 @@ class MirrorDungeonRunner:
 
             case 15: # OMG P-ENTER!!!
                 self.human_click(self.width / 2, self.height / 6)
-                time.sleep(random.uniform(0.05, 0.25))
+                time.sleep(random.gauss(0.6, 0.5))
                 pyautogui.press('p')
-                time.sleep(random.uniform(0.05, 0.25))
+                time.sleep(random.gauss(1.0, 0.5))
                 pyautogui.press('enter')
 
             case 16: # Shop
@@ -655,13 +659,13 @@ class MirrorDungeonRunner:
             case 17: # Ego Gift Reward 1
                 if not self.human_click('Reward_EGOGIFT'):
                     self.human_click('Reward_Cost')
-                time.sleep(random.uniform(0.5, 1.0))
+                time.sleep(random.uniform(0.5, 2.5))
                 self.human_click(1200, 800)
 
             case 18: # Ego Gift Reward 2 (Acquire)
                 if not self.human_click('AcquireEGOGIFT'):
                     self.human_click('Plus1')
-                time.sleep(random.uniform(0.2, 1.5))
+                time.sleep(random.uniform(0.5, 3.5))
                 self.human_click(1705, 870)
 
             case 19: # Collect Rewards Confirm (pass level up)
