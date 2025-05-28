@@ -167,8 +167,11 @@ class MirrorDungeonRunner:
     image_dir: str = IMAGE_DIR
 
     curState: int = -1
+    semi_auto: bool = False
 
-    def __init__(self, team_id: int | None = None) -> Self:
+    def __init__(self, team_id: int | None = None, semi_auto: bool | None = False) -> Self:
+        self.semi_auto = semi_auto
+
         self._get_screen_size()
         self._loadTeamConfigs()
 
@@ -653,16 +656,25 @@ class MirrorDungeonRunner:
                 pyautogui.press('enter')
 
             case 16: # Shop
+                if self.semi_auto:
+                    return True
+
                 self.do_shop()
                 self.human_click('Shop_Leave')
 
             case 17: # Ego Gift Reward 1
+                if self.semi_auto:
+                    return True
+
                 if not self.human_click('Reward_EGOGIFT'):
                     self.human_click('Reward_Cost')
                 time.sleep(random.uniform(0.5, 2.5))
                 self.human_click(1200, 800)
 
             case 18: # Ego Gift Reward 2 (Acquire)
+                if self.semi_auto:
+                    return True
+
                 if not self.human_click('AcquireEGOGIFT'):
                     self.human_click('Plus1')
                 time.sleep(random.uniform(0.5, 3.5))

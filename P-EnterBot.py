@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument('-r', '--runs', type=int)
 parser.add_argument('-t', '--team', type=int)
+parser.add_argument('-s', '--semi-auto', action="store_true", help="Bot will not do shops / reward encounters.")
 
 pyautogui.FAILSAFE = False
 
@@ -23,6 +24,8 @@ os.chdir(script_directory)
 args = parser.parse_args()
 
 def main():
+
+    # Args stuff
     runs = 0
     if not args.runs:
         user_input: str = pyautogui.prompt(text = "Enter number of MD runs", title = "StartMenu", default = 1)
@@ -37,7 +40,11 @@ def main():
     if args.team:
         team_id = args.team
 
-    mirror_dungeon_runner = MirrorDungeonRunner.MirrorDungeonRunner(team_id)
+    semi_auto = args.semi_auto if args.semi_auto else False
+
+    # Run mirror dungeons
+
+    mirror_dungeon_runner = MirrorDungeonRunner.MirrorDungeonRunner(team_id, semi_auto)
     for i in range(runs):
         print(f"Doing run {i}")
         mirror_dungeon_runner.run_md()
